@@ -1,15 +1,37 @@
-import React from "react";
-import {
-    Button,
-    Container,
-    Divider,
-    Form,
-    Icon
-} from "semantic-ui-react";
+import React, { useState } from "react";
+import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
+import MenuSistema from "../../MenuSistema";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function FormProduto() {
+  const [codigo, setCodigo] = useState();
+  const [titulo, setTitulo] = useState();
+  const [descricao, setDescricao] = useState();
+  const [valorUnitario, setValorUnitario] = useState();
+  const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
+  const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
+  function salvar() {
+    let produtoRequest = {
+      codigo: codigo,
+      titulo: titulo,
+      descricao: descricao,
+      valorUnitario: valorUnitario,
+      tempoEntregaMinimo: tempoEntregaMinimo,
+      tempoEntregaMaximo: tempoEntregaMaximo,
+    }; 
+    axios
+      .post("http://localhost:8082/api/produto", produtoRequest)
+      .then((response) => {
+        alert("Produto cadastrado com sucesso!");
+      })
+      .catch((error) => {
+        console.log("Erro ao incluir um produto:", error);
+      });
+  }
   return (
     <div>
+      <MenuSistema />
       <div style={{ marginTop: "3%" }}>
         <Container textAlign="justified">
           <h2>
@@ -30,6 +52,8 @@ export default function FormProduto() {
                   maxLength="100"
                   width={7}
                   placeholder="Ex: Pizza"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
                 />
 
                 <Form.Input
@@ -39,6 +63,8 @@ export default function FormProduto() {
                   maxLength="15"
                   width={1}
                   placeholder="Ex: 12piz34"
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value)}
                 />
               </Form.Group>
 
@@ -46,6 +72,8 @@ export default function FormProduto() {
                 <Form.TextArea
                   placeholder="Informe a descrição do produto."
                   label="Descrição"
+                  value={descricao}
+                  onChange={(e) => setDescricao(e.target.value)}
                 />
               </Form.Group>
               <Form.Group widths={"equal"}>
@@ -56,6 +84,8 @@ export default function FormProduto() {
                   maxLength="100"
                   width="7"
                   placeholder="25,69"
+                  value={valorUnitario}
+                  onChange={(e) => setValorUnitario(e.target.value)}
                 />
                 <Form.Input
                   fluid
@@ -63,6 +93,8 @@ export default function FormProduto() {
                   maxLength="100"
                   width="7"
                   placeholder="15"
+                  value={tempoEntregaMinimo}
+                  onChange={(e) => setTempoEntregaMinimo(e.target.value)}
                 />
                 <Form.Input
                   fluid
@@ -70,6 +102,8 @@ export default function FormProduto() {
                   maxLength="100"
                   width="7"
                   placeholder="49"
+                  value={tempoEntregaMaximo}
+                  onChange={(e) => setTempoEntregaMaximo(e.target.value)}
                 />
               </Form.Group>
             </Form>
@@ -81,6 +115,8 @@ export default function FormProduto() {
                 icon
                 labelPosition="left"
                 color="orange"
+                as={Link}
+                to="/list-produto"
               >
                 <Icon name="reply" />
                 Voltar
@@ -93,6 +129,7 @@ export default function FormProduto() {
                 labelPosition="left"
                 color="blue"
                 floated="right"
+                onClick={() => salvar()}
               >
                 <Icon name="save" />
                 Salvar
