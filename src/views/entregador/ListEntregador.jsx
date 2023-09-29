@@ -58,13 +58,7 @@ export default function ListEntregador() {
                   <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
                   <Table.HeaderCell>Entregas Realizadas</Table.HeaderCell>
                   <Table.HeaderCell>Valor do Frete</Table.HeaderCell>
-                  <Table.HeaderCell>Rua</Table.HeaderCell>
-                  <Table.HeaderCell>Número</Table.HeaderCell>
-                  <Table.HeaderCell>Bairro</Table.HeaderCell>
-                  <Table.HeaderCell>Cidade</Table.HeaderCell>
-                  <Table.HeaderCell>CEP</Table.HeaderCell>
-                  <Table.HeaderCell>UF</Table.HeaderCell>
-                  <Table.HeaderCell>Complemento</Table.HeaderCell>
+                  <Table.HeaderCell>Ativo</Table.HeaderCell>
                   <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
@@ -82,24 +76,24 @@ export default function ListEntregador() {
                     <Table.Cell>{entregador.foneFixo}</Table.Cell>
                     <Table.Cell>{entregador.qtdEntregasRealizadas}</Table.Cell>
                     <Table.Cell>{entregador.valorFrete}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoRua}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoNumero}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoBairro}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoCidade}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoCep}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoUf}</Table.Cell>
-                    <Table.Cell>{entregador.enderecoComplemento}</Table.Cell>
                     <Table.Cell>{entregador.ativo}</Table.Cell>
                     <Table.Cell textAlign="center">
-                      <Button
+                    <Button
                         inverted
                         circular
                         color="green"
-                        title="Clique aqui para editar os dados deste entregador"
+                        title="Clique aqui para editar os dados deste cliente"
                         icon
                       >
-                        <Icon name="edit" />
-                      </Button>{" "}
+                        <Link
+                          to="/form-entregador"
+                          state={{ id: entregador.id }}
+                          style={{ color: "green" }}
+                        >
+                          {" "}
+                          <Icon name="edit" />{" "}
+                        </Link>
+                      </Button>
                       &nbsp;
                       <Button
                         inverted
