@@ -12,16 +12,17 @@ import {
 } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
 
-export default function ListEntregador() {
+export default function ListProduto() {
   const [lista, setLista] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [idRemover, setIdRemover] = useState();
+
   useEffect(() => {
     carregarLista();
   }, []);
 
   function carregarLista() {
-    axios.get("http://localhost:8082/api/entregador").then((response) => {
+    axios.get("http://localhost:8082/api/fornecedor").then((response) => {
       setLista(response.data);
     });
   }
@@ -31,34 +32,26 @@ export default function ListEntregador() {
   }
   async function remover() {
     await axios
-      .delete("http://localhost:8082/api/entregador/" + idRemover)
+      .delete("http://localhost:8082/api/fornecedor/" + idRemover)
       .then((response) => {
-        console.log("Entregador removido com sucesso.");
+        console.log("Fornecedor removido com sucesso.");
 
-        axios.get("http://localhost:8082/api/entregador").then((response) => {
+        axios.get("http://localhost:8082/api/fornecedor").then((response) => {
           setLista(response.data);
         });
       })
       .catch((error) => {
-        console.log("Erro ao remover um entregador.");
+        console.log("Erro ao remover um fornecedor.");
       });
     setOpenModal(false);
   }
 
-  function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
-    }
-
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
-  }
   return (
     <div>
       <MenuSistema />
       <div style={{ marginTop: "3%" }}>
         <Container textAlign="justified">
-          <h2> Entregador </h2>
+          <h2> Fornecedor </h2>
           <Divider />
 
           <div style={{ marginTop: "4%" }}>
@@ -69,7 +62,7 @@ export default function ListEntregador() {
               icon="clipboard outline"
               floated="right"
               as={Link}
-              to="/form-entregador"
+              to="/form-fornecedor"
             />
             <br />
             <br />
@@ -79,43 +72,35 @@ export default function ListEntregador() {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Nome</Table.HeaderCell>
-                  <Table.HeaderCell>CPF</Table.HeaderCell>
-                  <Table.HeaderCell>RG</Table.HeaderCell>
-                  <Table.HeaderCell>Data de Nascimento</Table.HeaderCell>
-                  <Table.HeaderCell>Fone Celular</Table.HeaderCell>
-                  <Table.HeaderCell>Fone Fixo</Table.HeaderCell>
-                  <Table.HeaderCell>Entregas Realizadas</Table.HeaderCell>
-                  <Table.HeaderCell>Valor do Frete</Table.HeaderCell>
-                  <Table.HeaderCell>Ativo</Table.HeaderCell>
+                  <Table.HeaderCell>Data Fundação</Table.HeaderCell>
+                  <Table.HeaderCell>Valor Mercado</Table.HeaderCell>
+                  <Table.HeaderCell>Endereco</Table.HeaderCell>
+                  <Table.HeaderCell>Pagina WEB</Table.HeaderCell>
+                  <Table.HeaderCell>Contato do Vendedor</Table.HeaderCell>
                   <Table.HeaderCell textAlign="center">Ações</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
 
               <Table.Body>
-                {lista.map((entregador) => (
-                  <Table.Row key={entregador.id}>
-                    <Table.Cell>{entregador.nome}</Table.Cell>
-                    <Table.Cell>{entregador.cpf}</Table.Cell>
-                    <Table.Cell>{entregador.rg}</Table.Cell>
-                    <Table.Cell>
-                      {formatarData(entregador.dataNascimento)}
-                    </Table.Cell>
-                    <Table.Cell>{entregador.foneCelular}</Table.Cell>
-                    <Table.Cell>{entregador.foneFixo}</Table.Cell>
-                    <Table.Cell>{entregador.qtdEntregasRealizadas}</Table.Cell>
-                    <Table.Cell>{entregador.valorFrete}</Table.Cell>
-                    <Table.Cell>{entregador.ativo}</Table.Cell>
+                {lista.map((fornecedor) => (
+                  <Table.Row key={fornecedor.id}>
+                    <Table.Cell>{fornecedor.nome}</Table.Cell>
+                    <Table.Cell>{fornecedor.dataFundacao}</Table.Cell>
+                    <Table.Cell>{fornecedor.valorMercado}</Table.Cell>
+                    <Table.Cell>{fornecedor.endereco}</Table.Cell>
+                    <Table.Cell>{fornecedor.paginaWeb}</Table.Cell>
+                    <Table.Cell>{fornecedor.contatoVendedor}</Table.Cell>
                     <Table.Cell textAlign="center">
                       <Button
                         inverted
                         circular
                         color="green"
-                        title="Clique aqui para editar os dados deste cliente"
+                        title="Clique aqui para editar os dados deste fornecedor"
                         icon
                       >
                         <Link
-                          to="/form-entregador"
-                          state={{ id: entregador.id }}
+                          to="/form-fornecedor"
+                          state={{ id: fornecedor.id }}
                           style={{ color: "green" }}
                         >
                           <Icon name="edit" style={{margin:0}}/>
@@ -126,8 +111,8 @@ export default function ListEntregador() {
                         inverted
                         circular
                         color="red"
-                        title="Clique aqui para remover este entregador"
-                        onClick={(e) => confirmaRemover(entregador.id)}
+                        title="Clique aqui para remover este fornecedor"
+                        onClick={(e) => confirmaRemover(fornecedor.id)}
                         icon
                       >
                         <Icon name="trash" />

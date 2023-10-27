@@ -1,6 +1,6 @@
 import { Segment } from 'semantic-ui-react';
 import './App.css';
-
+ 
 import Rotas from './Routes';
 function App() {
   return (

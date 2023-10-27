@@ -1,11 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Container, Divider, Icon, Table } from "semantic-ui-react";
+import {
+  Button,
+  Container,
+  Divider,
+  Header,
+  Icon,
+  Modal,
+  Table,
+} from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
 
 export default function ListProduto() {
   const [lista, setLista] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [idRemover, setIdRemover] = useState();
 
   useEffect(() => {
     carregarLista();
@@ -16,15 +26,26 @@ export default function ListProduto() {
       setLista(response.data);
     });
   }
-
-  function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
-    }
-
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+  function confirmaRemover(id) {
+    setOpenModal(true);
+    setIdRemover(id);
   }
+  async function remover() {
+    await axios
+      .delete("http://localhost:8082/api/produto/" + idRemover)
+      .then((response) => {
+        console.log("Produto removido com sucesso.");
+
+        axios.get("http://localhost:8082/api/produto").then((response) => {
+          setLista(response.data);
+        });
+      })
+      .catch((error) => {
+        console.log("Erro ao remover um produto.");
+      });
+    setOpenModal(false);
+  }
+
   return (
     <div>
       <MenuSistema />
@@ -37,7 +58,7 @@ export default function ListProduto() {
             <Button
               label="Novo"
               circular
-              color="orange"
+              color="green"
               icon="clipboard outline"
               floated="right"
               as={Link}
@@ -47,7 +68,7 @@ export default function ListProduto() {
             <br />
             <br />
 
-            <Table color="orange" sortable celled>
+            <Table color="green" sortable celled>
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Codigo</Table.HeaderCell>
@@ -60,7 +81,7 @@ export default function ListProduto() {
               </Table.Header>
 
               <Table.Body>
-                {lista.map((produto) =>  (
+                {lista.map((produto) => (
                   <Table.Row key={produto.id}>
                     <Table.Cell>{produto.codigo}</Table.Cell>
                     <Table.Cell>{produto.titulo}</Table.Cell>
@@ -68,7 +89,7 @@ export default function ListProduto() {
                     <Table.Cell>{produto.tempoEntregaMinimo}</Table.Cell>
                     <Table.Cell>{produto.tempoEntregaMaximo}</Table.Cell>
                     <Table.Cell textAlign="center">
-                    <Button
+                      <Button
                         inverted
                         circular
                         color="green"
@@ -80,8 +101,7 @@ export default function ListProduto() {
                           state={{ id: produto.id }}
                           style={{ color: "green" }}
                         >
-                          {" "}
-                          <Icon name="edit" />{" "}
+                          <Icon name="edit" style={{margin:0}}/>
                         </Link>
                       </Button>
                       &nbsp;
@@ -90,6 +110,7 @@ export default function ListProduto() {
                         circular
                         color="red"
                         title="Clique aqui para remover este produto"
+                        onClick={(e) => confirmaRemover(produto.id)}
                         icon
                       >
                         <Icon name="trash" />
@@ -102,6 +123,27 @@ export default function ListProduto() {
           </div>
         </Container>
       </div>
+      <Modal
+        onClose={() => setOpenModal(false)}
+        onOpen={() => setOpenModal(true)}
+        open={openModal}
+        size="mini"
+      >
+        <Header icon>
+          <Icon name="trash" />
+          <div style={{ marginTop: "5%" }}>
+            Tem certeza que deseja remover esse registro?
+          </div>
+        </Header>
+        <Modal.Actions>
+          <Button color="red" inverted onClick={() => setOpenModal(false)}>
+            <Icon name="remove" /> Não
+          </Button>
+          <Button color="green" inverted onClick={() => remover()}>
+            <Icon name="checkmark" /> Sim
+          </Button>
+        </Modal.Actions>
+      </Modal>
     </div>
   );
 }
