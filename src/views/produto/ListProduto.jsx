@@ -72,6 +72,7 @@ export default function ListProduto() {
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Codigo</Table.HeaderCell>
+                  <Table.HeaderCell>Categoria</Table.HeaderCell>
                   <Table.HeaderCell>Titulo</Table.HeaderCell>
                   <Table.HeaderCell>Valor Unitario</Table.HeaderCell>
                   <Table.HeaderCell>Tempo de Entrega Mínimo</Table.HeaderCell>
@@ -84,6 +85,7 @@ export default function ListProduto() {
                 {lista.map((produto) => (
                   <Table.Row key={produto.id}>
                     <Table.Cell>{produto.codigo}</Table.Cell>
+                    <Table.Cell>{produto.categoria.descricao}</Table.Cell>
                     <Table.Cell>{produto.titulo}</Table.Cell>
                     <Table.Cell>{produto.valorUnitario}</Table.Cell>
                     <Table.Cell>{produto.tempoEntregaMinimo}</Table.Cell>
@@ -101,7 +103,7 @@ export default function ListProduto() {
                           state={{ id: produto.id }}
                           style={{ color: "green" }}
                         >
-                          <Icon name="edit" style={{margin:0}}/>
+                          <Icon name="edit" style={{ margin: 0 }} />
                         </Link>
                       </Button>
                       &nbsp;

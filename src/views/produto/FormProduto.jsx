@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
-import { Link, useLocation } from "react-router-dom";
-import axios from "axios";
 
 export default function FormProduto() {
   const { state } = useLocation();
@@ -14,11 +14,13 @@ export default function FormProduto() {
   const [valorUnitario, setValorUnitario] = useState();
   const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
   const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
-
+  const [listaCategoria, setListaCategoria] = useState();
+  const [idCategoria, setIdCategoria] = useState();
+  const ENDERECO_API = "http://localhost:8082";
   useEffect(() => {
     if (state != null && state.id != null) {
       axios
-        .get("http://localhost:8082/api/produto/" + state.id)
+        .get(ENDERECO_API + "/api/produto/" + state.id)
         .then((response) => {
           setIdProduto(response.data.id);
           setCodigo(response.data.codigo);
@@ -27,23 +29,32 @@ export default function FormProduto() {
           setValorUnitario(response.data.valorUnitario);
           setTempoEntregaMinimo(response.data.tempoEntregaMinimo);
           setTempoEntregaMaximo(response.data.tempoEntregaMaximo);
+          setIdCategoria(response.data.categoria.id)
         });
     }
+
+    axios.get(ENDERECO_API + "/api/categoriaproduto")
+      .then((response) => {
+        const dropDownCategorias = response.data.map(c => ({ text: c.descricao, value: c.id }));
+        setListaCategoria(dropDownCategorias);
+      })
+
   }, [state]);
 
   function salvar() {
     let produtoRequest = {
+      idCategoria: idCategoria,
       codigo: codigo,
       titulo: titulo,
       descricao: descricao,
       valorUnitario: valorUnitario,
       tempoEntregaMinimo: tempoEntregaMinimo,
       tempoEntregaMaximo: tempoEntregaMaximo,
-    }; 
+    };
 
     if (idProduto != null) {
       axios
-        .put("http://localhost:8082/api/produto/" + idProduto, produtoRequest)
+        .put(ENDERECO_API + "/api/produto/" + idProduto, produtoRequest)
         .then((response) => {
           console.log("Produto alterado com sucesso.");
         })
@@ -51,9 +62,9 @@ export default function FormProduto() {
           console.log("Erro ao alter um produto.");
         });
     } else {
-      
+
       axios
-        .post("http://localhost:8082/api/produto", produtoRequest)
+        .post(ENDERECO_API + "/api/produto", produtoRequest)
         .then((response) => {
           alert("Produto cadastrado com sucesso!");
         })
@@ -67,7 +78,7 @@ export default function FormProduto() {
       <MenuSistema />
       <div style={{ marginTop: "3%" }}>
         <Container textAlign="justified">
-        {idProduto === undefined && (
+          {idProduto === undefined && (
             <h2>
               <span style={{ color: "darkgray" }}>
                 Produto &nbsp;
@@ -111,6 +122,18 @@ export default function FormProduto() {
                   onChange={(e) => setCodigo(e.target.value)}
                 />
               </Form.Group>
+              <Form.Select
+                required
+                fluid
+                tabIndex='3'
+                placeholder='Selecione'
+                label='Categoria'
+                options={listaCategoria}
+                value={idCategoria}
+                onChange={(e, { value }) => {
+                  setIdCategoria(value)
+                }}
+              />
 
               <Form.Group widths={"equal"}>
                 <Form.TextArea
