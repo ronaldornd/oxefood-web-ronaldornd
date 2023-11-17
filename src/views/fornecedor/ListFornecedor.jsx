@@ -103,7 +103,7 @@ export default function ListProduto() {
                           state={{ id: fornecedor.id }}
                           style={{ color: "green" }}
                         >
-                          <Icon name="edit" style={{margin:0}}/>
+                          <Icon name="edit" style={{ margin: 0 }} />
                         </Link>
                       </Button>
                       &nbsp;

@@ -1,9 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
+import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
-import { Link, useLocation } from "react-router-dom";
 
 export default function FormCliente() {
   const { state } = useLocation();
@@ -31,12 +31,12 @@ export default function FormCliente() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
+
   }
 
   function salvar() {
@@ -48,7 +48,7 @@ export default function FormCliente() {
       foneFixo: foneFixo,
     };
 
-    if (idCliente !== null) {
+    if (idCliente != null) {
       //Alteração:
       axios
         .put("http://localhost:8082/api/cliente/" + idCliente, clienteRequest)
@@ -69,6 +69,7 @@ export default function FormCliente() {
           console.log("Erro ao incluir o cliente.");
         });
     }
+
   }
   return (
     <div>
@@ -87,7 +88,7 @@ export default function FormCliente() {
           {idCliente !== undefined && (
             <h2>
               <span style={{ color: "darkgray" }}>
-                
+
                 Cliente &nbsp;
                 <Icon name="angle double right" size="small" />
               </span>

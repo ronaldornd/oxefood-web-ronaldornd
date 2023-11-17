@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
-import InputMask from "react-input-mask";
 
-import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Link, useLocation } from "react-router-dom";
 
 export default function FormFornecedor() {
   const { state } = useLocation();
@@ -34,12 +34,11 @@ export default function FormFornecedor() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
   function salvar() {
     let fornecedorRequest = {

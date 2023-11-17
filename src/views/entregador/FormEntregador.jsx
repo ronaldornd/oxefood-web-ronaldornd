@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Container, Divider, Form, Icon, Button } from "semantic-ui-react";
-import InputMask from "react-input-mask";
-import MenuSistema from "../../MenuSistema";
-import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
+import { Link, useLocation } from "react-router-dom";
+import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
+import MenuSistema from "../../MenuSistema";
 
 export default function FormEntregador() {
   const { state } = useLocation();
@@ -53,12 +53,11 @@ export default function FormEntregador() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
 
   function salvar() {

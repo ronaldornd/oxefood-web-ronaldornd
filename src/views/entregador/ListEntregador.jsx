@@ -46,12 +46,11 @@ export default function ListEntregador() {
   }
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
   return (
     <div>
@@ -118,7 +117,7 @@ export default function ListEntregador() {
                           state={{ id: entregador.id }}
                           style={{ color: "green" }}
                         >
-                          <Icon name="edit" style={{margin:0}}/>
+                          <Icon name="edit" style={{ margin: 0 }} />
                         </Link>
                       </Button>
                       &nbsp;
