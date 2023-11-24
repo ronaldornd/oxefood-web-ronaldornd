@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
-import InputMask from "react-input-mask";
 
-import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { Link, useLocation } from "react-router-dom";
+import { mensagemErro, notifyError, notifySuccess } from '../../views/utils/Util';
 
 export default function FormFornecedor() {
   const { state } = useLocation();
@@ -18,7 +19,7 @@ export default function FormFornecedor() {
   const [contatoVendedor, setContatoVendedor] = useState();
 
   useEffect(() => {
-    if (state != null && state.id != null) {
+    if (state !== null && state.id !== null) {
       axios
         .get("http://localhost:8082/api/fornecedor/" + state.id)
         .then((response) => {
@@ -34,12 +35,11 @@ export default function FormFornecedor() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
   function salvar() {
     let fornecedorRequest = {
@@ -51,26 +51,34 @@ export default function FormFornecedor() {
       contatoVendedor: contatoVendedor,
     };
 
-    if (idFornecedor != null) {
+    if (idFornecedor !== null) {
       axios
         .put(
           "http://localhost:8082/api/fornecedor/" + idFornecedor,
           fornecedorRequest
         )
         .then((response) => {
-          console.log("Fornecedor alterado com sucesso.");
+          notifySuccess("Fornecedor alterado com sucesso.");
         })
         .catch((error) => {
-          console.log("Erro ao alter um fornecedor.");
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     } else {
       axios
         .post("http://localhost:8082/api/fornecedor", fornecedorRequest)
         .then((response) => {
-          alert("Fornecedor cadastrado com sucesso!");
+          notifySuccess("Fornecedor cadastrado com sucesso!");
         })
         .catch((error) => {
-          console.log("Erro ao incluir um fornecedor:", error);
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     }
   }
@@ -88,7 +96,7 @@ export default function FormFornecedor() {
               Cadastro
             </h2>
           )}
-          {idFornecedor != undefined && (
+          {idFornecedor !== undefined && (
             <h2>
               <span style={{ color: "darkgray" }}>
                 Fornecedor &nbsp;

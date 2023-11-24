@@ -11,6 +11,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
+import { mensagemErro, notifyError, notifySuccess } from '../../views/utils/Util';
 
 export default function ListProduto() {
   const [lista, setLista] = useState([]);
@@ -34,14 +35,18 @@ export default function ListProduto() {
     await axios
       .delete("http://localhost:8082/api/fornecedor/" + idRemover)
       .then((response) => {
-        console.log("Fornecedor removido com sucesso.");
+        notifySuccess("Fornecedor removido com sucesso.");
 
         axios.get("http://localhost:8082/api/fornecedor").then((response) => {
           setLista(response.data);
         });
       })
       .catch((error) => {
-        console.log("Erro ao remover um fornecedor.");
+        if (error.response) {
+          notifyError(error.response.data.errors[0].defaultMessage)
+        } else {
+          notifyError(mensagemErro)
+        }
       });
     setOpenModal(false);
   }
@@ -103,7 +108,7 @@ export default function ListProduto() {
                           state={{ id: fornecedor.id }}
                           style={{ color: "green" }}
                         >
-                          <Icon name="edit" style={{margin:0}}/>
+                          <Icon name="edit" style={{ margin: 0 }} />
                         </Link>
                       </Button>
                       &nbsp;

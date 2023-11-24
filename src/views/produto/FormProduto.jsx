@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
+import { mensagemErro, notifyError, notifySuccess } from '../../views/utils/Util';
 
 export default function FormProduto() {
   const { state } = useLocation();
@@ -18,7 +19,7 @@ export default function FormProduto() {
   const [idCategoria, setIdCategoria] = useState();
   const ENDERECO_API = "http://localhost:8082";
   useEffect(() => {
-    if (state != null && state.id != null) {
+    if (state !== null && state.id !== null) {
       axios
         .get(ENDERECO_API + "/api/produto/" + state.id)
         .then((response) => {
@@ -52,24 +53,32 @@ export default function FormProduto() {
       tempoEntregaMaximo: tempoEntregaMaximo,
     };
 
-    if (idProduto != null) {
+    if (idProduto !== null) {
       axios
         .put(ENDERECO_API + "/api/produto/" + idProduto, produtoRequest)
         .then((response) => {
-          console.log("Produto alterado com sucesso.");
+          notifySuccess("Produto alterado com sucesso.");
         })
         .catch((error) => {
-          console.log("Erro ao alter um produto.");
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     } else {
 
       axios
-        .post(ENDERECO_API + "/api/produto", produtoRequest)
+        .post(ENDERECO_API + "/api/produto/", produtoRequest)
         .then((response) => {
-          alert("Produto cadastrado com sucesso!");
+          notifySuccess("Produto cadastrado com sucesso!");
         })
         .catch((error) => {
-          console.log("Erro ao incluir um produto:", error);
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     }
   }
@@ -87,7 +96,7 @@ export default function FormProduto() {
               Cadastro
             </h2>
           )}
-          {idProduto != undefined && (
+          {idProduto !== undefined && (
             <h2>
               <span style={{ color: "darkgray" }}>
                 Produto &nbsp;

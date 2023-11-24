@@ -11,6 +11,7 @@ import {
   Table,
 } from "semantic-ui-react";
 import MenuSistema from "../../MenuSistema";
+import { mensagemErro, notifyError, notifySuccess } from '../../views/utils/Util';
 
 export default function ListCliente() {
   const [lista, setLista] = useState([]);
@@ -34,25 +35,28 @@ export default function ListCliente() {
     await axios
       .delete("http://localhost:8082/api/cliente/" + idRemover)
       .then((response) => {
-        console.log("Cliente removido com sucesso.");
+        notifySuccess("Cliente removido com sucesso.");
 
         axios.get("http://localhost:8082/api/cliente").then((response) => {
           setLista(response.data);
         });
       })
       .catch((error) => {
-        console.log("Erro ao remover um cliente.");
+        if (error.response) {
+          notifyError(error.response.data.errors[0].defaultMessage)
+        } else {
+          notifyError(mensagemErro)
+        }
       });
     setOpenModal(false);
   }
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
   return (
     <div>
@@ -111,7 +115,7 @@ export default function ListCliente() {
                           state={{ id: cliente.id }}
                           style={{ color: "green" }}
                         >
-                          <Icon name="edit" style={{margin:0}}/>
+                          <Icon name="edit" style={{ margin: 0 }} />
                         </Link>
                       </Button>
                       &nbsp;

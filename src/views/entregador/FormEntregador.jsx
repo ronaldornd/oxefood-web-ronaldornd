@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Container, Divider, Form, Icon, Button } from "semantic-ui-react";
-import InputMask from "react-input-mask";
-import MenuSistema from "../../MenuSistema";
-import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import InputMask from "react-input-mask";
+import { Link, useLocation } from "react-router-dom";
+import { Button, Container, Divider, Form, Icon } from "semantic-ui-react";
+import MenuSistema from "../../MenuSistema";
+import { mensagemErro, notifyError, notifySuccess } from '../../views/utils/Util';
 
 export default function FormEntregador() {
   const { state } = useLocation();
@@ -27,7 +28,7 @@ export default function FormEntregador() {
   const [ativo, setAtivo] = useState();
 
   useEffect(() => {
-    if (state != null && state.id != null) {
+    if (state !== null && state.id !== null) {
       axios
         .get("http://localhost:8082/api/entregador/" + state.id)
         .then((response) => {
@@ -53,12 +54,11 @@ export default function FormEntregador() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === "" || dataParam === undefined) {
-      return "";
+    if (dataParam === null || dataParam === '' || dataParam === undefined) {
+      return ''
     }
 
-    let arrayData = dataParam.split("-");
-    return arrayData[2] + "/" + arrayData[1] + "/" + arrayData[0];
+    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
 
   function salvar() {
@@ -80,26 +80,34 @@ export default function FormEntregador() {
       enderecoComplemento: enderecoComplemento,
       ativo: ativo,
     };
-    if (idEntregador != null) {
+    if (idEntregador !== null) {
       axios
         .put(
           "http://localhost:8082/api/entregador/" + idEntregador,
           entregadorRequest
         )
         .then((response) => {
-          console.log("Entregador alterado com sucesso.");
+          notifySuccess("Entregador alterado com sucesso.");
         })
         .catch((error) => {
-          console.log("Erro ao alter um entregador.");
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     } else {
       axios
         .post("http://localhost:8082/api/entregador", entregadorRequest)
         .then((response) => {
-          console.log("Entregador cadastrado com sucesso!");
+          notifySuccess("Entregador cadastrado com sucesso!");
         })
         .catch((error) => {
-          console.log("Erro ao incluir um entregador:", error);
+          if (error.response) {
+            notifyError(error.response.data.errors[0].defaultMessage)
+          } else {
+            notifyError(mensagemErro)
+          }
         });
     }
   }
@@ -116,7 +124,7 @@ export default function FormEntregador() {
             Cadastro
           </h2>
         )}
-        {idEntregador != undefined && (
+        {idEntregador !== undefined && (
           <h2>
             <span style={{ color: "darkgray" }}>
               Entregador &nbsp;
