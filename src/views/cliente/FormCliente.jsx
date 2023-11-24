@@ -80,6 +80,7 @@ export default function FormCliente() {
           }
         });
     }
+
   }
   return (
     <div>
@@ -127,6 +128,7 @@ export default function FormCliente() {
                     value={cpf}
                     onChange={(e) => setCpf(e.target.value)}
                   />
+
                 </Form.Input>
               </Form.Group>
               <Form.Input

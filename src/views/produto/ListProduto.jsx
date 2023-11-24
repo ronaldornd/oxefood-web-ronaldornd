@@ -115,12 +115,11 @@ export default function ListProduto() {
       formData.append('idCategoria', idCategoriaParam);
     }
 
-    await axios.post("http://localhost:8080/api/produto/filtrar", formData)
+    await axios.post("http://localhost:8082/api/produto/filtrar", formData)
       .then((response) => {
-        setListaProdutos(response.data)
+        setLista(response.data)
       })
   }
-
 
   return (
     <div>
@@ -194,7 +193,6 @@ export default function ListProduto() {
                 </Form>
               </Segment> : ""
             }
-
 
             <Table color="green" sortable celled>
               <Table.Header>
