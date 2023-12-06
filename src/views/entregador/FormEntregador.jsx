@@ -54,11 +54,22 @@ export default function FormEntregador() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === '' || dataParam === undefined) {
-      return ''
-    }
-
-    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
+      if (dataParam!=null){let data = dataParam.toString();
+        
+        /*if (dataParam === null || dataParam === '' || dataParam === undefined) {
+          return ''
+        }
+        
+        return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];*/
+        
+        if (data === null || data === '' || data === undefined) {
+          return ''
+        }
+        
+        let arrayData = data.split('-');
+        return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
+      }
+    
   }
 
   function salvar() {
@@ -80,7 +91,8 @@ export default function FormEntregador() {
       enderecoComplemento: enderecoComplemento,
       ativo: ativo,
     };
-    if (idEntregador !== null) {
+    if (idEntregador !== undefined) {
+      console.log("entrou aq")
       axios
         .put(
           "http://localhost:8082/api/entregador/" + idEntregador,

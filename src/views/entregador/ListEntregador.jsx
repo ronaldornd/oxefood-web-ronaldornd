@@ -49,14 +49,6 @@ export default function ListEntregador() {
       });
     setOpenModal(false);
   }
-
-  function formatarData(dataParam) {
-    if (dataParam === null || dataParam === '' || dataParam === undefined) {
-      return ''
-    }
-
-    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
-  }
   return (
     <div>
       <MenuSistema />
@@ -102,7 +94,7 @@ export default function ListEntregador() {
                     <Table.Cell>{entregador.cpf}</Table.Cell>
                     <Table.Cell>{entregador.rg}</Table.Cell>
                     <Table.Cell>
-                      {formatarData(entregador.dataNascimento)}
+                      {entregador.dataNascimento}
                     </Table.Cell>
                     <Table.Cell>{entregador.foneCelular}</Table.Cell>
                     <Table.Cell>{entregador.foneFixo}</Table.Cell>
