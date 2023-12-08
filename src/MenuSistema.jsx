@@ -1,6 +1,7 @@
 /* n */import React from "react";
 import { Link } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
+import { logout } from "./views/utils/AuthenticationService";
 
 class MenuSistema extends React.Component {
   state = {
@@ -8,59 +9,58 @@ class MenuSistema extends React.Component {
   };
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name });
+  logout = () => {
+    logout()
+  }
 
   render() {
     return (
-      <div>
+      <>
         <Menu inverted>
+
           <Menu.Item
-            name="home"
-            active={this.state.activeItem === "home"}
+            name='home'
+            active={this.state.activeItem === 'home'}
             onClick={this.handleItemClick}
             as={Link}
-            to="/"
+            to='/home'
           />
 
           <Menu.Item
-            name="cliente"
-            active={this.state.activeItem === "cliente"}
+            name='cliente'
+            active={this.state.activeItem === 'cliente'}
             onClick={this.handleItemClick}
             as={Link}
             to='/list-cliente'
           />
 
           <Menu.Item
-            name="produto"
-            active={this.state.activeItem === "produto"}
+            name='produto'
+            active={this.state.activeItem === 'produto'}
             onClick={this.handleItemClick}
             as={Link}
-            to="/list-produto"
+            to='/list-produto'
           />
 
           <Menu.Item
-            name="entregador"
-            active={this.state.activeItem === "entregador"}
+            name='entregador'
+            active={this.state.activeItem === 'entregador'}
             onClick={this.handleItemClick}
             as={Link}
-            to="/list-entregador"
+            to='/form-entregador'
           />
+
           <Menu.Item
-            name="fornecedor"
-            active={this.state.activeItem === "fornecedor"}
-            onClick={this.handleItemClick}
+            className='navbar__item--mobile'
+            onClick={this.logout}
+            content='Sair'
             as={Link}
-            to="/list-fornecedor"
+            to='/'
           />
-          <Menu.Item
-          name="Sair"
-          active={this.state.activeItem === "Sair"}
-          onClick={this.handleItemClick}
-          os={Link}
-          to="/"
-          />
+
         </Menu>
-      </div>
-    );
+      </>
+    )
   }
 }
 
