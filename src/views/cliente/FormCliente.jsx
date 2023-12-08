@@ -34,11 +34,21 @@ export default function FormCliente() {
   }, [state]);
 
   function formatarData(dataParam) {
-    if (dataParam === null || dataParam === '' || dataParam === undefined) {
-      return ''
+    if (dataParam!=null){let data = dataParam.toString();
+        
+      /*if (dataParam === null || dataParam === '' || dataParam === undefined) {
+        return ''
+      }
+      
+      return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];*/
+      
+      if (data === null || data === '' || data === undefined) {
+        return ''
+      }
+      
+      let arrayData = data.split('-');
+      return arrayData[2] + '/' + arrayData[1] + '/' + arrayData[0];
     }
-
-    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
   }
 
   function salvar() {

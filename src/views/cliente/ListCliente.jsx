@@ -57,14 +57,6 @@ export default function ListCliente() {
     setOpenModal(false);
   }
 
-  function formatarData(dataParam) {
-    if (dataParam === null || dataParam === '' || dataParam === undefined) {
-      return ''
-    }
-
-    return dataParam[2] + '/' + dataParam[1] + '/' + dataParam[0];
-  }
-
 
   function handleMenuFiltro() {
 
@@ -183,7 +175,7 @@ export default function ListCliente() {
                     <Table.Cell>{cliente.nome}</Table.Cell>
                     <Table.Cell>{cliente.cpf}</Table.Cell>
                     <Table.Cell>
-                      {formatarData(cliente.dataNascimento)}
+                      {cliente.dataNascimento}
                     </Table.Cell>
                     <Table.Cell>{cliente.foneCelular}</Table.Cell>
                     <Table.Cell>{cliente.foneFixo}</Table.Cell>
