@@ -62,6 +62,7 @@ export default function FormEntregador() {
   }
 
   function salvar() {
+    console.log(idEntregador);
     let entregadorRequest = {
       nome: nome,
       dataNascimento: dataNascimento,
@@ -80,7 +81,7 @@ export default function FormEntregador() {
       enderecoComplemento: enderecoComplemento,
       ativo: ativo,
     };
-    if (idEntregador !== null) {
+    if (idEntregador !== undefined || idEntregador !== null) {
       axios
         .put(
           "http://localhost:8082/api/entregador/" + idEntregador,

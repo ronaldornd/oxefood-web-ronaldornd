@@ -51,7 +51,7 @@ export default function FormCliente() {
       foneFixo: foneFixo,
     };
 
-    if (idCliente != null) {
+    if (idCliente !== null) {
       //Alteração:
       axios
         .put("http://localhost:8082/api/cliente/" + idCliente, clienteRequest)

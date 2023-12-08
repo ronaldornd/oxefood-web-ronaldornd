@@ -88,11 +88,11 @@ export default function ListCliente() {
 
     let formData = new FormData();
 
-    if (nomeParam != undefined) {
+    if (nomeParam !== undefined) {
       setNome(nomeParam)
       formData.append('nome', nomeParam);
     }
-    if (cpfParam != undefined) {
+    if (cpfParam !== undefined) {
       setCpf(cpfParam)
       formData.append('cpf', cpfParam);
     }
